@@ -2,3 +2,6 @@
 {% block body %}
 	<div id="nja_welcome"></div>
 {% endblock %}
+{% block footer %}
+	<address id="nja_copy">(c) 2013 AFE Python. All rights unreserved.</address>
+{% endblock %}
