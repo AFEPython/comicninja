@@ -1,0 +1,4 @@
+{% extends "base.html5" %}
+{% block body %}
+	<div id="nja_welcome"></div>
+{% endblock %}

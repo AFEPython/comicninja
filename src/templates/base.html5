@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ page_title }}</title>
+		<link rel="stylesheet" type="text/css" href="/static/styles/ninja.css" />
+    </head>
+    <body>
+		<div id="nja_bkgd_main">
+			<div id="nja_bkgd_sun"></div>
+			<div id="nja_bkgd_stars"></div>
+			<div id="nja_bkgd_land"></div>
+			<div id="nja_bkgd_logos">
+				<div id="nja_bkgd_logo"></div>
+				<div id="nja_bkgd_head"></div>
+			</div>
+		</div>
+        {% if 'username' in session %}
+        <form action="{{url_for('index')}}" method="post">
+            <div id="nja_nav">{{ session['username'] }} | <input id="nja_logout" type="submit" name="logout" value="logout" /></div>
+        </form>
+        {% endif %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul id="nja_messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        <div id="nja_content">
+            {% block body %}{% endblock %}
+        </div>
+        <div id="nja_footer">
+            {% block footer %}{% endblock %}
+        </div>
+        <script type="text/javascript" src="/static/js/jquery-1.8.1.min.js"></script>
+        <script type="text/javascript" src="/static/js/ninja.js"></script>
+        {% block scripts %}{% endblock %}
+    </body>
+</html>
