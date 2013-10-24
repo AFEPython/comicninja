@@ -40,7 +40,7 @@ def handle_logout(f):
 class Home(views.MethodView):
 	def get(self):
 		context = {}
-		context["page_title"] = "Welcome to the Comic Ninja Dojo"
+		context["page_title"] = "Welcome to the Comic Ninja Dōjō"
 		return render_template("home.html5")
 	@login_required
 	def post(self):
