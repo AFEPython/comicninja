@@ -22,7 +22,7 @@ def login_required(f):
         if "username" in session:
             return f(*args,**kwargs)
         else:
-            flash("Enter the Dojo with your secret Comic Ninja name and password.")
+            flash("Enter the Dōjō with your secret Comic Ninja name and password.")
             return redirect(url_for("home"))
     return wrapper;
 
