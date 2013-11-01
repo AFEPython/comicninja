@@ -20,7 +20,7 @@ def login_required(f):
         if "username" in session:
             return f(*args,**kwargs)
         else:
-            flash("Enter the Dojo with your secret Comic Ninja name and password.")
+            flash(u"Enter the Dōjō with your secret Comic Ninja name and password.")
             return redirect(url_for("home"))
     return wrapper;
 
@@ -38,7 +38,7 @@ def handle_logout(f):
 class Home(views.MethodView):
     def get(self):
         context = {}
-        context["page_title"] = "Welcome to the Comic Ninja Dojo"
+        context["page_title"] = "Welcome to the Comic Ninja Dōjō"
         return render_template("home.html5")
     @login_required
     def post(self):
