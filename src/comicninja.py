@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*- 
+
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, views
 from oauth2client.client import credentials_from_code
 
@@ -22,7 +24,7 @@ def login_required(f):
         if "username" in session:
             return f(*args,**kwargs)
         else:
-            flash(u"Enter the Dōjō with your secret Comic Ninja name and password.")
+            flash("Enter the Dōjō with your secret Comic Ninja name and password.")
             return redirect(url_for("home"))
     return wrapper;
 
@@ -40,7 +42,7 @@ def handle_logout(f):
 class Home(views.MethodView):
 	def get(self):
 		context = {}
-		context["page_title"] = u"Welcome to the Comic Ninja Dōjō"
+		context["page_title"] = "Welcome to the Comic Ninja Dōjō"
 		return render_template("home.html5")
 	@login_required
 	def post(self):
