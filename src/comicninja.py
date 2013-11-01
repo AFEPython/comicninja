@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, views
 
 import os
@@ -20,7 +22,7 @@ def login_required(f):
         if "username" in session:
             return f(*args,**kwargs)
         else:
-            flash(u"Enter the Dōjō with your secret Comic Ninja name and password.")
+            flash("Enter the Dōjō with your secret Comic Ninja name and password.")
             return redirect(url_for("home"))
     return wrapper;
 
