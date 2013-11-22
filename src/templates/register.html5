@@ -1,0 +1,12 @@
+{% extends "base.html5" %}
+{% block body %}
+{{ errors }}
+<form id="nja-register" action="/register" method="POST">
+    <input id="nja-username" name="username" type="text" placeholder="Ninja Username" />
+    <input id="nja-password" name="password" type="password" placeholder="Password" />
+    <input id="nja-password1" name="password1" type="password" placeholder="Confirm Password" />
+    <input id="nja-email" name="email" type="text" placeholder="Your Email" />
+    <input id="nja-name" name="name" type="text" placeholder="Your Name" />
+    <button type="submit" value="register">Register</button>
+</form>
+{% endblock %}

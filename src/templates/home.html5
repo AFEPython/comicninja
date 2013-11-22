@@ -1,6 +1,9 @@
 {% extends "base.html5" %}
 {% block body %}
-	<div id="nja_welcome"></div>
+	<div id="nja-welcome"></div>
+    <div id="nja-auth">
+        <a href="/login">Enter</a> OR <a href="/register">Join</a>
+    </div>
 {% endblock %}
 {% block footer %}
 	<address id="nja_copy">(c) 2013 AFE Python. All rights unreserved.</address>

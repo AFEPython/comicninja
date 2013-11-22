@@ -1,0 +1,8 @@
+{% extends "base.html5" %}
+{% block body %}
+<form id="nja-login" action="/login" method="POST">
+    <input id="nja-username" name="username" type="text" placeholder="Ninja Username" />
+    <input id="nja-password" name="password" type="password" placeholder="Password" />
+    <button type="submit" value="login">Enter the Dojo</button>
+</form>
+{% endblock %}

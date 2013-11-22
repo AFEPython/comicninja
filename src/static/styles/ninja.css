@@ -14,7 +14,7 @@ body {
 	height:					100%;
 	overflow:				hidden;
 }
-div#nja_bkgd_main { /* outer container */
+div#nja-bkgd-main { /* outer container */
 	position:				fixed;
 	top:					0;
 	left:					0;
@@ -84,7 +84,7 @@ div#nja_bkgd_main { /* outer container */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#45054f',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
 	font-size:				1.4em;
 }
-div#nja_bkgd_sun {
+div#nja-bkgd-sun {
 	background:				transparent url("/static/images/background/sun.png") left top no-repeat;
 	position:				absolute;
 	bottom:					0;
@@ -93,20 +93,20 @@ div#nja_bkgd_sun {
 	height:					195px;
 	margin-left:			-161.5px;
 }
-div#nja_bkgd_land {
+div#nja-bkgd-land {
 	background:				transparent url("/static/images/background/land.png") left top no-repeat;
 	position:				absolute;
-	bottom:					0;
+	bottom:					-10px;
 	left:					50%;
 	width:					977px;
 	height:					155px;
 	margin-left:			-488.5px;
 }
-div#nja_bkgd_stars {
+div#nja-bkgd-stars {
 	background:				transparent	url("/static/images/background/stars.png") left top repeat-x;
 	height:					183px;
 }
-div#nja_bkgd_logos {
+div#nja-bkgd-logos {
 	height:					162px;
 	width:					764px;
 	position:				absolute;
@@ -114,7 +114,7 @@ div#nja_bkgd_logos {
 	left:					50%;
 	margin-left:			-382px;
 }
-div#nja_bkgd_logo {
+div#nja-bkgd-logo {
 	background:				transparent	url("/static/images/background/logo.png") left top no-repeat;
 	height:					162px;
 	width:					764px;
@@ -123,7 +123,7 @@ div#nja_bkgd_logo {
 	left:					0;
 	z-index:				300;
 }
-div#nja_bkgd_head {
+div#nja-bkgd-head {
 	background:				transparent	url("/static/images/background/head.png") left top no-repeat;
 	height:					235px;
 	width:					280px;
@@ -134,14 +134,15 @@ div#nja_bkgd_head {
 	z-index:				250;
 }
 
-div#nja_content {
-	padding: 10px 20px;
+div#nja-content {
+    position:               relative;
+	padding:                10px 20px;
 }
-div#nja_content h1 {
-	color: #737373;
-	margin: 14px 0 20px;
+div#nja-content h1 {
+	color:                  #737373;
+	margin:                 14px 0 20px;
 }
-div#nja_content h2 {
+div#nja-content h2 {
 	color: #737373;
 	margin: 10px 0 20px;
 }
@@ -167,7 +168,7 @@ input[type=text] {
 }
 
 /******************** MESSAGES */
-ul#nja_messages {
+ul#nja-messages {
 	margin: 20px 20px 0;
 	border: 1px solid #F1F1F1;
 	list-style: none;
@@ -175,45 +176,38 @@ ul#nja_messages {
 }
 
 /************************ INDEX */
-div#nja_content div#nja_welcome {
+div#nja-content div#nja-welcome {
 	width:	720px;
 	margin:	88px auto;
 	text-align: center;
 }
-img.nja_logo {
+img.nja-logo {
 	width: 115px;
 	margin: 0 20px;
 	float: left;
 	position: relative;
 	top: -20px;
 }
-img.nja_google_logo_big {
-	float: left;
-	position: relative;
-}
-div#nja_header {
+div#nja-header {
 	width: 100%;
 	border-bottom: 1px solid #E3E3E3;
 	background-color: #F1F1F1;
 }
 
+/************************ AUTHENTICATION*/
+div#nja-auth {
+    position:           absolute;
+    top:                10px;
+    right:              10px;
+}
+
 /********************** HOME */
-div#nja_header img.nja_mapr_logo {
-	height: 34px;
-	margin: 17px 0 0 17px;
-}
-div#nja_header img.nja_google_logo {
-	margin-left: 15px;
-	float: left;
-	top: 17px;
-	position: relative;
-}
-div#nja_header img.nja_logo {
+div#nja-header img.nja-logo {
 	top: -3px;
 	width: 54px;
 	margin: 8px;
 }
-a.nja_button_link,
+a.nja-button-link,
 button {
 	display: inline-block;
 	background-color: #4D90FE;
@@ -231,8 +225,7 @@ button {
 	border-radius: 2px;
 	cursor: pointer !important;
 	font-weight: bold;
-	height: 29px;
-	line-height: 29px;
+	height: 34px;
 	min-width: 54px;
 	padding: 0 8px;
 	text-align: center;
@@ -241,18 +234,18 @@ button {
 	-webkit-user-select: none;
 	font-size: 1.0em;
 }
-a.nja_button_link {
+a.nja-button-link {
 	clear: both;
 	display: block;
 	width: 200px;
 	margin: 10px auto;
 }
-div#nja_nav {
+div#nja-nav {
 	position: absolute;
 	right: 20px;
 	top: 8px;
 }
-input#nja_logout {
+input#nja-logout {
 	background: none;
 	border: none;
 	cursor: pointer;

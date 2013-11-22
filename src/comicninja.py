@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, views
 
 import os
@@ -22,7 +20,7 @@ def login_required(f):
         if "username" in session:
             return f(*args,**kwargs)
         else:
-            flash("Enter the Dōjō with your secret Comic Ninja name and password.")
+            flash("Enter the Dojo with your secret Comic Ninja name and password.")
             return redirect(url_for("home"))
     return wrapper;
 
@@ -40,11 +38,45 @@ def handle_logout(f):
 class Home(views.MethodView):
     def get(self):
         context = {}
-        context["page_title"] = "Welcome to the Comic Ninja Dōjō"
+        context["page_title"] = "Welcome to the Comic Ninja Dojo"
         return render_template("home.html5")
-    @login_required
     def post(self):
         pass
+
+class Login(views.MethodView):
+    def get(self):
+        # Return a login page.
+        context = {}
+        context["page_title"] = "Enter the Comic Ninja Dojo"
+        return render_template("login.html5")
+    def post(self):
+        # Process the login request.
+        pass
+
+class Register(views.MethodView):
+    def get(self):
+        # Return a register page.
+        context = {}
+        context["page_title"] = "Join the Comic Ninja Dojo"
+        return render_template("register.html5", **context)
+
+    def post(self):
+        context = {}
+        context["page_title"] = "Join the Comic Ninja Dojo"
+        errors = []
+        # Process the registration request.
+        if request.form['username']:
+            if request.form['password'] == request.form['password1']:
+                self.register(request.form)
+            else:
+                errors.append('Passwords do not match.')
+        else:
+            errors.append('Please provide a username, if anything.')
+        context['errors'] = errors
+        return render_template("register.html5", **context)
+
+    def register(self, form):
+        print "You are registered as {0}, {1}".format(form['username'], form['name'])
 
 class ComicList(views.MethodView):
     @login_required
@@ -73,6 +105,14 @@ class ComicDelete(views.MethodView):
 # Rules for the comicninja urls, so the comicninjas get to where thy want to go
 comicninja.add_url_rule("/",
     view_func = Home.as_view('home'),
+    methods = ["GET","POST"])
+
+comicninja.add_url_rule("/login",
+    view_func = Login.as_view('login'),
+    methods = ["GET","POST"])
+
+comicninja.add_url_rule("/register",
+    view_func = Register.as_view('register'),
     methods = ["GET","POST"])
 
 comicninja.add_url_rule("/comics/list",
