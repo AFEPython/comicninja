@@ -103,7 +103,7 @@ class ComicDelete(views.MethodView):
 
 
 ##### SEND THIS CODE TO ITS OWN FILE, EVENTUALLY #####
-# Rules for the comicninja urls, so the comicninjas get to where thy want to go
+# Rules for the comicninja urls, so the comicninjas get to where they want to go
 comicninja.add_url_rule("/",
     view_func = Home.as_view('home'),
     methods = ["GET","POST"])
