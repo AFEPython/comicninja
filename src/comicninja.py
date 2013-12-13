@@ -69,14 +69,15 @@ class Register(views.MethodView):
             if request.form['password'] == request.form['password1']:
                 self.register(request.form)
             else:
-                errors.append('Passwords do not match.')
+                errors.append('On the job, incorrectly typed passcodes may hamper your unit\'s security. Please be more careful in the future. You may attempt registration again.')
         else:
-            errors.append('Please provide a username, if anything.')
+            errors.append('Please choose a Ninja Codename so that we may know how to address you.')
         context['errors'] = errors
         return render_template("register.html5", **context)
 
     def register(self, form):
         print "You are registered as {0}, {1}".format(form['username'], form['name'])
+
 
 class ComicList(views.MethodView):
     @login_required
