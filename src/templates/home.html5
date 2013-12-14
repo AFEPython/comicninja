@@ -2,7 +2,7 @@
 {% block body %}
 	<div id="nja-welcome"></div>
     <div id="nja-auth">
-        <a href="/login">Enter</a> OR <a href="/register">Join</a>
+	<a href="/login">Enter</a><font color=5fbf84> or </font><a href="/register">Join</a>
     </div>
 {% endblock %}
 {% block footer %}

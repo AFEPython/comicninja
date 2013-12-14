@@ -74,9 +74,9 @@ class Register(views.MethodView):
             if request.form['password'] == request.form['password1']:
                 self.register(request.form)
             else:
-                errors.append('Passwords do not match.')
+                errors.append('On the job, incorrectly typed passcodes may hamper your unit\'s security. Please be more careful in the future. You may attempt registration again.')
         else:
-            errors.append('Please provide a username, if anything.')
+            errors.append('Please choose a Ninja Codename so that we may know how to address you.')
         context['errors'] = errors
 
         return render_template("register.html5", **context)
@@ -90,6 +90,7 @@ class Register(views.MethodView):
             'password' : form['password']
         }
         users.insert(new_user)
+
 
 class ComicList(views.MethodView):
     @login_required
@@ -115,7 +116,7 @@ class ComicDelete(views.MethodView):
 
 
 ##### SEND THIS CODE TO ITS OWN FILE, EVENTUALLY #####
-# Rules for the comicninja urls, so the comicninjas get to where thy want to go
+# Rules for the comicninja urls, so the comicninjas get to where they want to go
 comicninja.add_url_rule("/",
     view_func = Home.as_view('home'),
     methods = ["GET","POST"])
