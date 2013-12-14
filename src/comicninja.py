@@ -1,4 +1,5 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, views
+from pymongo import MongoClient
 
 import os
 import functools
@@ -11,6 +12,10 @@ SECRET_KEY = '\x95\x89d\xc6&\r@\xdd\xcb\x08\xac\xab\xe4\xf6\x9e\x00\x1d]\x9fR\x1
 
 comicninja = Flask(__name__)
 comicninja.config.from_object(__name__)
+
+mongo_client = MongoClient()
+db = mongo_client['comic_ninja_database']
+users = db['users']
 
 ####### SEND THIS TO ITS OWN FILE, EVENTUALLY ########
 # Convenience methods
@@ -73,10 +78,18 @@ class Register(views.MethodView):
         else:
             errors.append('Please provide a username, if anything.')
         context['errors'] = errors
+
         return render_template("register.html5", **context)
 
     def register(self, form):
         print "You are registered as {0}, {1}".format(form['username'], form['name'])
+        new_user = {
+            'username': form['username'],
+            'name' : form['name'],
+            'email' : form['email'],
+            'password' : form['password']
+        }
+        users.insert(new_user)
 
 class ComicList(views.MethodView):
     @login_required
