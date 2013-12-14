@@ -113,8 +113,6 @@ class ComicDelete(views.MethodView):
     def delete(self):
         pass
 
-
-
 ##### SEND THIS CODE TO ITS OWN FILE, EVENTUALLY #####
 # Rules for the comicninja urls, so the comicninjas get to where they want to go
 comicninja.add_url_rule("/",
@@ -141,7 +139,9 @@ comicninja.add_url_rule("/comics/<comic_id>/delete",
     view_func = ComicDelete.as_view("delete_comic"),
     methods = ["DELETE"])
 
+
 if (__name__ == "__main__"):
     port = 5000
     comicninja.debug = True
     comicninja.run(host="0.0.0.0",port=port)
+

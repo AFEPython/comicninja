@@ -3,6 +3,7 @@
     <head>
         <title>{{ page_title }}</title>
 		<link rel="stylesheet" type="text/css" href="/static/styles/ninja.css" />
+		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     </head>
     <body>
         {% if 'username' in session %}
