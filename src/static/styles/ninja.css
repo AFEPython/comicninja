@@ -161,7 +161,8 @@ table tr.odd {
 table {
 	margin-left: 30px;
 }
-input[type=text] {
+input[type=text],
+input[type=password] {
 	border: 1px solid #b1b1b1;
 	padding: 6px;
 	font-size: 1.1em;

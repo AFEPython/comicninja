@@ -89,7 +89,7 @@ class Register(views.MethodView):
             'email' : form['email'],
             'password' : form['password']
         }
-        users.insert(new_user)
+        new_user_id = users.insert(new_user)
 
 
 class ComicList(views.MethodView):
