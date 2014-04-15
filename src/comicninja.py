@@ -2,9 +2,12 @@ from flask import Flask, request, session, g, redirect, url_for, abort, render_t
 from pymongo import MongoClient
 
 import os
+import os.path
+import shutil
 import functools
 import urllib,urllib2
 import json
+from ConfigParser import SafeConfigParser
 from datetime import datetime, timedelta
 
 #configuration
@@ -26,7 +29,7 @@ def login_required(f):
             return f(*args,**kwargs)
         else:
             flash("Enter the Dojo with your secret Comic Ninja name and password.")
-            return redirect(url_for("home"))
+            return redirect(url_for("login"))
     return wrapper;
 
 def handle_logout(f):
@@ -45,8 +48,6 @@ class Home(views.MethodView):
         context = {}
         context["page_title"] = "Welcome to the Comic Ninja Dojo"
         return render_template("home.html5")
-    def post(self):
-        pass
 
 class Login(views.MethodView):
     def get(self):
@@ -56,7 +57,7 @@ class Login(views.MethodView):
         return render_template("login.html5")
     def post(self):
         # Process the login request.
-        pass
+        return 'Not yet implemented.'
 
 class Register(views.MethodView):
     def get(self):
@@ -117,7 +118,7 @@ class ComicDelete(views.MethodView):
 # Rules for the comicninja urls, so the comicninjas get to where they want to go
 comicninja.add_url_rule("/",
     view_func = Home.as_view('home'),
-    methods = ["GET","POST"])
+    methods = ["GET"])
 
 comicninja.add_url_rule("/login",
     view_func = Login.as_view('login'),
@@ -139,9 +140,14 @@ comicninja.add_url_rule("/comics/<comic_id>/delete",
     view_func = ComicDelete.as_view("delete_comic"),
     methods = ["DELETE"])
 
-
 if (__name__ == "__main__"):
-    port = 5000
-    comicninja.debug = True
+    config = SafeConfigParser()
+    config_name = 'comicninja.cfg'
+    if not os.path.isfile(config_name):
+        shutil.copyfile('comicninja.default.cfg', config_name)
+    config.read(config_name)
+
+    port = config.getint('server', 'port')
+    comicninja.debug = config.getboolean('server', 'debug')
     comicninja.run(host="0.0.0.0",port=port)
 

@@ -6,5 +6,5 @@
     </div>
 {% endblock %}
 {% block footer %}
-	<address id="nja_copy">(c) 2013 AFE Python. All rights unreserved.</address>
+	<address id="nja_copy">&copy; 2013 AFE Python. All rights unreserved.</address>
 {% endblock %}
