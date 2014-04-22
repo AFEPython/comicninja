@@ -142,9 +142,10 @@ comicninja.add_url_rule("/comics/<comic_id>/delete",
 
 if (__name__ == "__main__"):
     config = SafeConfigParser()
-    config_name = 'comicninja.cfg'
+    config_name = comicninja.root_path + '/../comicninja.cfg'
     if not os.path.isfile(config_name):
-        shutil.copyfile('comicninja.default.cfg', config_name)
+        print(comicninja.root_path)
+        shutil.copyfile(comicninja.root_path + '/../comicninja.default.cfg', config_name)
     config.read(config_name)
 
     port = config.getint('server', 'port')
