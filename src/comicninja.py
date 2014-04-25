@@ -1,5 +1,7 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, views
 from pymongo import MongoClient
+from ConfigParser import SafeConfigParser
+from datetime import datetime, timedelta
 
 import os
 import os.path
@@ -7,8 +9,6 @@ import shutil
 import functools
 import urllib,urllib2
 import json
-from ConfigParser import SafeConfigParser
-from datetime import datetime, timedelta
 
 #configuration
 SECRET_KEY = '\x95\x89d\xc6&\r@\xdd\xcb\x08\xac\xab\xe4\xf6\x9e\x00\x1d]\x9fR\x16\xa3\xa5Q'
@@ -42,6 +42,15 @@ def handle_logout(f):
             return f(*args,**kwargs)
     return wrapper
 
+def salty_password(username, password):
+    '''@returns a salted password given a username and plain text pw.'''
+    user_hashbrown = SHA256.new(username).hexdigest()
+    salt = ''.join(
+       [user_hashbrown[i] for i in range(0,len(user_hashbrown), 3)]
+    )
+    password_hash = SHA256.new(salt+password).hexdigest()
+    return password_hash
+
 # The comicninja Object Classification
 class Home(views.MethodView):
     def get(self):
@@ -57,7 +66,14 @@ class Login(views.MethodView):
         return render_template("login.html5")
     def post(self):
         # Process the login request.
-        return 'Not yet implemented.'
+        u = request.form['username']
+        p = request.form['password']
+        salted_pass = salty_password(u, p)
+	
+	user = users.find_one({'username': u, 'password': p})
+	if user is not None:
+           print "You're IN!"
+        return 'Almost implemented.'
 
 class Register(views.MethodView):
     def get(self):
@@ -88,7 +104,7 @@ class Register(views.MethodView):
             'username': form['username'],
             'name' : form['name'],
             'email' : form['email'],
-            'password' : form['password']
+            'password' : salty_password(form['username'], form['password'])
         }
         new_user_id = users.insert(new_user)
 
