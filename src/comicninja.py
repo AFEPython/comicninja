@@ -16,7 +16,7 @@ SECRET_KEY = '\x95\x89d\xc6&\r@\xdd\xcb\x08\xac\xab\xe4\xf6\x9e\x00\x1d]\x9fR\x1
 comicninja = Flask(__name__)
 comicninja.config.from_object(__name__)
 
-mongo_client = MongoClient()
+mongo_client = MongoClient('localhost', 27017)
 db = mongo_client['comic_ninja_database']
 users = db['users']
 
@@ -158,10 +158,9 @@ comicninja.add_url_rule("/comics/<comic_id>/delete",
 
 if (__name__ == "__main__"):
     config = SafeConfigParser()
-    config_name = comicninja.root_path + os.sep + os.path.join('..', 'comicninja.cfg')
+    config_name = os.path.join(comicninja.root_path, '..', 'comicninja.cfg')
     if not os.path.isfile(config_name):
-        shutil.copyfile(comicninja.root_path + os.sep + 
-            os.path.join('..', 'comicninja.default.cfg'), config_name)
+        shutil.copyfile(os.path.join(comicninja.root_path, '..', 'comicninja.default.cfg'), config_name)
     config.read(config_name)
 
     port = config.getint('server', 'port')
