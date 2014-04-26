@@ -46,7 +46,7 @@ def salty_password(username, password):
     '''@returns a salted password given a username and plain text pw.'''
     user_hashbrown = SHA256.new(username).hexdigest()
     salt = ''.join(
-       [user_hashbrown[i] for i in range(0,len(user_hashbrown), 3)]
+       [user_hashbrown[i] for i in range(0, len(user_hashbrown), 3)]
     )
     password_hash = SHA256.new(salt+password).hexdigest()
     return password_hash
@@ -102,9 +102,9 @@ class Register(views.MethodView):
         print "You are registered as {0}, {1}".format(form['username'], form['name'])
         new_user = {
             'username': form['username'],
-            'name' : form['name'],
-            'email' : form['email'],
-            'password' : salty_password(form['username'], form['password'])
+            'name': form['name'],
+            'email': form['email'],
+            'password': salty_password(form['username'], form['password'])
         }
         new_user_id = users.insert(new_user)
 
