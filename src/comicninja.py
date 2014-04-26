@@ -16,7 +16,7 @@ SECRET_KEY = '\x95\x89d\xc6&\r@\xdd\xcb\x08\xac\xab\xe4\xf6\x9e\x00\x1d]\x9fR\x1
 comicninja = Flask(__name__)
 comicninja.config.from_object(__name__)
 
-mongo_client = MongoClient('localhost', 27017)
+mongo_client = MongoClient()
 db = mongo_client['comic_ninja_database']
 users = db['users']
 
