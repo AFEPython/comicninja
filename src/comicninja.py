@@ -11,10 +11,9 @@ import urllib,urllib2
 import json
 
 #configuration
-SECRET_KEY = '\x95\x89d\xc6&\r@\xdd\xcb\x08\xac\xab\xe4\xf6\x9e\x00\x1d]\x9fR\x16\xa3\xa5Q'
-
 comicninja = Flask(__name__)
 comicninja.config.from_object(__name__)
+comicninja.secret_key = '\x14\xba\xd2\xc4N\xca\xc9Z\x9bJ#.\x80\x87'
 
 mongo_client = MongoClient()
 db = mongo_client['comic_ninja_database']
@@ -51,6 +50,7 @@ def salty_password(username, password):
     password_hash = SHA256.new(salt+password).hexdigest()
     return password_hash
 
+
 # The comicninja Object Classification
 class Home(views.MethodView):
     def get(self):
@@ -58,6 +58,8 @@ class Home(views.MethodView):
         context["page_title"] = "Welcome to the Comic Ninja Dojo"
         return render_template("home.html5")
 
+
+# User Login
 class Login(views.MethodView):
     def get(self):
         # Return a login page.
@@ -68,12 +70,23 @@ class Login(views.MethodView):
         # Process the login request.
         u = request.form['username']
         p = request.form['password']
-        salted_pass = salty_password(u, p)
-	
-	user = users.find_one({'username': u, 'password': p})
-	if user is not None:
-           print "You're IN!"
-        return 'Almost implemented.'
+        redirect_url = request.form['redirect_url']
+        redirect_url = request.args.get['redirect_url']
+        query_string = request.query_string
+
+        user = users.find_one({
+            'username': u,
+            'password': salty_password(u, p)
+        })
+        if user is not None:
+            session['username'] = u
+        else:
+            flash("Either your username or password is incorrect.")
+            return redirect(url_for("login"))
+
+        final_redirect_url = redirect_url or url_for("sketchbook")
+        return redirect(final_redirect_url)
+
 
 class Register(views.MethodView):
     def get(self):
@@ -117,6 +130,7 @@ class ComicList(views.MethodView):
     def post(self):
         pass
 
+
 class ComicEdit(views.MethodView):
     @login_required
     def get(self):
@@ -124,6 +138,7 @@ class ComicEdit(views.MethodView):
     @login_required
     def post(self):
         pass
+
 
 class ComicDelete(views.MethodView):
     @login_required
