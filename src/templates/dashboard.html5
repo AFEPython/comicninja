@@ -1,0 +1,20 @@
+{% extends "base.html5" %}
+{% block body %}
+    <div id="nja-header"></div>
+    <div id="nja-menu"></div>
+    <div id="nja-main"></div>
+    <div id="nja-community">
+        <div id="nja-personal-messages">
+            <p class="nja-message"></p>
+            <p class="nja-message"></p>
+        </div>
+    </div>
+
+	<div id="nja-welcome"></div>
+    <div id="nja-auth">
+	<a href="/login">Enter</a><font color=5fbf84> or </font><a href="/register">Join</a>
+    </div>
+{% endblock %}
+{% block footer %}
+	<address id="nja_copy">&copy; 2013 AFE Python. All rights unreserved.</address>
+{% endblock %}
