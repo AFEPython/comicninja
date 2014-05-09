@@ -24,7 +24,7 @@ users = db['users']
 def login_required(f):
     @functools.wraps(f)
     def wrapper(*args,**kwargs):
-        if "username" in session:
+        if "user" in session:
             return f(*args,**kwargs)
         else:
             flash("Enter the Dojo with your secret Comic Ninja name and password.")
@@ -79,7 +79,7 @@ class Login(views.MethodView):
             'password': salty_password(u, p)
         })
         if user is not None:
-            session['username'] = u
+            session['user'] = user
         else:
             flash("Either your username or password is incorrect.")
             return redirect(url_for("login"))
@@ -121,6 +121,15 @@ class Register(views.MethodView):
         }
         new_user_id = users.insert(new_user)
 
+
+class Dashboard(views.MethodView):
+    @login_required
+    def get(self):
+        context = {}
+        context['page_title'] = "Your Ninja Home Base"
+        context['user'] = session['user']
+        context['errors'] = []
+        return render_template('dashboard.html5', **context)
 
 class ComicList(views.MethodView):
     @login_required
