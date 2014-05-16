@@ -7,7 +7,7 @@
     </head>
     <body>
         {% if 'user' in session %}
-        <form action="{{url_for('index')}}" method="post">
+        <form action="{{url_for('home')}}" method="post">
             <div id="nja_nav">{{ session['user']['username'] }} | <input id="nja_logout" type="submit" name="logout" value="logout" /></div>
         </form>
         {% endif %}
