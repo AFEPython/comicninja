@@ -2,6 +2,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, render_t
 from pymongo import MongoClient
 from ConfigParser import SafeConfigParser
 from datetime import datetime, timedelta
+from Crypto.Hash import SHA256
 
 import os
 import os.path
@@ -24,7 +25,7 @@ users = db['users']
 def login_required(f):
     @functools.wraps(f)
     def wrapper(*args,**kwargs):
-        if "username" in session:
+        if "user" in session:
             return f(*args,**kwargs)
         else:
             flash("Enter the Dojo with your secret Comic Ninja name and password.")
@@ -79,12 +80,12 @@ class Login(views.MethodView):
             'password': salty_password(u, p)
         })
         if user is not None:
-            session['username'] = u
+            session['user'] = user
         else:
             flash("Either your username or password is incorrect.")
             return redirect(url_for("login"))
 
-        final_redirect_url = redirect_url or url_for("sketchbook")
+        final_redirect_url = redirect_url or url_for("dashboard")
         return redirect(final_redirect_url)
 
 
@@ -102,14 +103,16 @@ class Register(views.MethodView):
         # Process the registration request.
         if request.form['username']:
             if request.form['password'] == request.form['password1']:
-                self.register(request.form)
+                user = self.register(request.form)
+                session['user'] = user
             else:
                 errors.append('On the job, incorrectly typed passcodes may hamper your unit\'s security. Please be more careful in the future. You may attempt registration again.')
         else:
             errors.append('Please choose a Ninja Codename so that we may know how to address you.')
         context['errors'] = errors
-
-        return render_template("register.html5", **context)
+        if len(errors) != 0:
+            return render_template("register.html5", **context)
+        return redirect(url_for('dashboard'))
 
     def register(self, form):
         print "You are registered as {0}, {1}".format(form['username'], form['name'])
@@ -120,7 +123,18 @@ class Register(views.MethodView):
             'password': salty_password(form['username'], form['password'])
         }
         new_user_id = users.insert(new_user)
+        new_user['_id'] = str(new_user_id)
+        return new_user
 
+
+class Dashboard(views.MethodView):
+    @login_required
+    def get(self):
+        context = {}
+        context['page_title'] = "Your Ninja Home Base"
+        context['user'] = session['user']
+        context['errors'] = []
+        return render_template('dashboard.html5', **context)
 
 class ComicList(views.MethodView):
     @login_required
@@ -148,28 +162,32 @@ class ComicDelete(views.MethodView):
 ##### SEND THIS CODE TO ITS OWN FILE, EVENTUALLY #####
 # Rules for the comicninja urls, so the comicninjas get to where they want to go
 comicninja.add_url_rule("/",
-    view_func = Home.as_view('home'),
-    methods = ["GET"])
+    view_func=Home.as_view('home'),
+    methods=["GET"])
 
 comicninja.add_url_rule("/login",
-    view_func = Login.as_view('login'),
-    methods = ["GET","POST"])
+    view_func=Login.as_view('login'),
+    methods=["GET","POST"])
 
 comicninja.add_url_rule("/register",
-    view_func = Register.as_view('register'),
-    methods = ["GET","POST"])
+    view_func=Register.as_view('register'),
+    methods=["GET","POST"])
+
+comicninja.add_url_rule("/dashboard",
+    view_func = Dashboard.as_view('dashboard'),
+    methods=["GET"])
 
 comicninja.add_url_rule("/comics/list",
-    view_func = ComicList.as_view("comic_list"),
-    methods = ["GET","POST"])
+    view_func=ComicList.as_view("comic_list"),
+    methods=["GET","POST"])
 
 comicninja.add_url_rule("/comics/<comic_id>/edit",
-    view_func = ComicEdit.as_view("edit_comic"),
-    methods = ["GET","POST"])
+    view_func=ComicEdit.as_view("edit_comic"),
+    methods=["GET","POST"])
 
 comicninja.add_url_rule("/comics/<comic_id>/delete",
-    view_func = ComicDelete.as_view("delete_comic"),
-    methods = ["DELETE"])
+    view_func=ComicDelete.as_view("delete_comic"),
+    methods=["DELETE"])
 
 if (__name__ == "__main__"):
     config = SafeConfigParser()
