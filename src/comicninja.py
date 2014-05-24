@@ -1,5 +1,6 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, views
 from pymongo import MongoClient
+from pymongo.cursor import Cursor as MongoCursor
 from ConfigParser import SafeConfigParser
 from datetime import datetime, timedelta
 from Crypto.Hash import SHA256
@@ -22,6 +23,25 @@ users = db['users']
 
 ####### SEND THIS TO ITS OWN FILE, EVENTUALLY ########
 # Convenience methods
+def serialize_mongo(result):
+    # Check if this has an _id with ObjectId
+    if type(result) is dict:
+        if '_id' in result:
+            result['_id'] = str(result['_id'])
+        if 'password' in result:
+            del result['password']
+        for key in result:
+            if type(result[key]) is MongoCursor:
+                result[key] = serialize_mongo(result[key])
+        new_result = result
+    # Otherwise, treat it as a <pymongo.cursor.Cursor>
+    elif (type(result) is MongoCursor or
+          type(result) is list):
+        new_result = []
+        for item in result:
+            new_result.append(serialize_mongo(item))
+    return new_result
+
 def login_required(f):
     @functools.wraps(f)
     def wrapper(*args,**kwargs):
@@ -71,22 +91,33 @@ class Login(views.MethodView):
         # Process the login request.
         u = request.form['username']
         p = request.form['password']
-        redirect_url = request.form['redirect_url']
-        redirect_url = request.args.get['redirect_url']
-        query_string = request.query_string
+#        redirect_url = request.form['redirect_url']
+#        redirect_url = request.args.get['redirect_url']
+#        query_string = request.query_string
 
         user = users.find_one({
             'username': u,
             'password': salty_password(u, p)
         })
         if user is not None:
-            session['user'] = user
+            session['user'] = serialize_mongo(user)
         else:
             flash("Either your username or password is incorrect.")
             return redirect(url_for("login"))
 
-        final_redirect_url = redirect_url or url_for("dashboard")
-        return redirect(final_redirect_url)
+        return redirect(url_for('dashboard'))
+
+
+class Logout(views.MethodView):
+    def get(self):
+        return self.logout()
+
+    def post(self):
+        return self.logout()
+
+    def logout(self):
+        session.pop("user", None)
+        return redirect(url_for("home"))
 
 
 class Register(views.MethodView):
@@ -123,8 +154,8 @@ class Register(views.MethodView):
             'password': salty_password(form['username'], form['password'])
         }
         new_user_id = users.insert(new_user)
-        new_user['_id'] = str(new_user_id)
-        return new_user
+        new_user['_id'] = new_user_id
+        return serialize_mongo(new_user)
 
 
 class Dashboard(views.MethodView):
@@ -167,6 +198,10 @@ comicninja.add_url_rule("/",
 
 comicninja.add_url_rule("/login",
     view_func=Login.as_view('login'),
+    methods=["GET","POST"])
+
+comicninja.add_url_rule("/logout",
+    view_func=Logout.as_view('logout'),
     methods=["GET","POST"])
 
 comicninja.add_url_rule("/register",

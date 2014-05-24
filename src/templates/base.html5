@@ -20,10 +20,10 @@
         </ul>
         {% endif %}
         {% endwith %}
+        <div id="nja-content">
+            {% block body %}{% endblock %}
+        </div>
 		<div id="nja-bkgd-main">
-            <div id="nja-content">
-                {% block body %}{% endblock %}
-            </div>
 			<div id="nja-bkgd-sun"></div>
 			<div id="nja-bkgd-stars"></div>
 			<div id="nja-bkgd-land"></div>

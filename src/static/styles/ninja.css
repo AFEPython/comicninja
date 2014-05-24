@@ -12,9 +12,9 @@ html {
 body {
 	width:					auto;
 	height:					100%;
-	overflow:				hidden;
 }
 div#nja-bkgd-main { /* outer container */
+    z-index:                0;
 	position:				fixed;
 	top:					0;
 	left:					0;
@@ -135,6 +135,7 @@ div#nja-bkgd-head {
 }
 
 div#nja-content {
+    z-index:                400;
     position:               relative;
 	padding:                10px 20px;
 }
@@ -190,11 +191,26 @@ img.nja-logo {
 	top: -20px;
 }
 div#nja-header {
-	width: 100%;
-	border-bottom: 1px solid #E3E3E3;
-	background-color: #F1F1F1;
+    width: 100%;
+    border-bottom: 1px solid #E3E3E3;
+    background-color: #F1F1F1;
+    height: 115px;
 }
-
+div#nja-menu {
+    width: 100%;
+    height: 60px;
+    background-color: rgba(98,68,110,0.98);
+}
+div#nja-main {
+    width: 100%;
+    height: 600px;
+    background-color: rgba(212,191,224,0.96);
+}
+div#nja-community {
+    width: 100%;
+    height: 400px;
+    background-color: rgba(180,180,180,0.96);
+}
 /************************ AUTHENTICATION*/
 div#nja-auth {
     position:           absolute;
